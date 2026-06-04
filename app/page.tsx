@@ -160,7 +160,7 @@ export default function LandingPage() {
 
                             {/* Headline */}
                             <h1
-                                className="text-white font-semibold leading-tight text-center"
+                                className="text-white font-semibold leading-normal text-center"
                                 style={{
                                     fontSize: 'clamp(2rem, 4vw, 3rem)',
                                     lineHeight: '1.1'
