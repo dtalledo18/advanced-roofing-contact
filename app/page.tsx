@@ -59,7 +59,8 @@ export default function LandingPage() {
         },
     ];
 
-    const inputClass = "w-full p-3 rounded-lg text-white placeholder-white border border-white/10 bg-black/30 focus:outline-none focus:border-yellow-400/70 transition-colors duration-150";
+    const inputClass =
+        "w-full p-3 rounded-lg text-white placeholder-white border border-white/10 bg-black/30 focus:outline-none focus:border-yellow-400/70 transition-colors duration-150";
 
     const StarRow = ({ count }: { count: number }) => (
         <div className="flex gap-0.5">
@@ -125,28 +126,32 @@ export default function LandingPage() {
                             <div
                                 className="lg:hidden mt-3 p-4 space-y-2"
                                 style={{
-                                    background: 'rgba(20, 20, 20, 0.25)', // Más oscuro
-                                    backdropFilter: 'blur(20px)',        // Más desenfocado
-                                    WebkitBackdropFilter: 'blur(20px)',  // Soporte Safari
+                                    background: 'rgba(20, 20, 20, 0.25)',
+                                    backdropFilter: 'blur(20px)',
+                                    WebkitBackdropFilter: 'blur(20px)',
                                     border: '1px solid rgba(255, 255, 255, 0.1)',
-                                    borderRadius: '1.5rem',              // Un poco más redondeado
+                                    borderRadius: '1.5rem',
                                 }}
                             >
-                                {['Website', 'About Us', 'Comercial Roofing'].map((item) => (
+                                {[
+                                    { label: 'Website', href: 'https://www.advancedroofingteam.com/' },
+                                    { label: 'About Us', href: 'https://www.advancedroofingteam.com/about-us/' },
+                                    { label: 'Comercial Roofing', href: 'https://www.advancedroofingteam.com/commercial-roofing/' }
+                                ].map((item) => (
                                     <a
-                                        key={item}
-                                        href="#"
+                                        key={item.label}
+                                        href={item.href}
                                         className="block text-white text-sm font-medium py-2.5 px-4 rounded-lg hover:bg-white/10 transition-colors"
                                     >
-                                        {item}
+                                        {item.label}
                                     </a>
                                 ))}
-                                <a
-                                    href="#"
-                                    className="block bg-yellow-400 text-black text-sm font-bold text-center py-2.5 px-4 rounded-full hover:bg-yellow-300 transition-colors mt-1"
+                                {/* Botón Contact sin enlace */}
+                                <div
+                                    className="block bg-yellow-400 text-black text-sm font-bold text-center py-2.5 px-4 rounded-full cursor-default mt-1"
                                 >
                                     Contact
-                                </a>
+                                </div>
                             </div>
                         )}
 
@@ -157,15 +162,24 @@ export default function LandingPage() {
                             </div>
                             <div className="flex items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-2 py-1.5 shadow-lg">
                                 <div className="flex items-center gap-8 px-6">
-                                    {['Website', 'About Us', 'Comercial Roofing'].map((item) => (
-                                        <a key={item} href="#" className="text-white text-sm font-medium hover:text-yellow-400 transition-colors">
-                                            {item}
+                                    {[
+                                        { label: 'Website', href: 'https://www.advancedroofingteam.com/' },
+                                        { label: 'About Us', href: 'https://www.advancedroofingteam.com/about-us/' },
+                                        { label: 'Comercial Roofing', href: 'https://www.advancedroofingteam.com/commercial-roofing/' }
+                                    ].map((item) => (
+                                        <a
+                                            key={item.label}
+                                            href={item.href}
+                                            className="text-white text-sm font-medium hover:text-yellow-400 transition-colors"
+                                        >
+                                            {item.label}
                                         </a>
                                     ))}
                                 </div>
-                                <a href="#" className="bg-yellow-400 text-black text-sm font-bold px-6 py-2 rounded-full hover:bg-yellow-300 transition-colors">
+                                {/* El botón Contact queda sin link por ahora */}
+                                <div className="bg-yellow-400 text-black text-sm font-bold px-6 py-2 rounded-full cursor-default">
                                     Contact
-                                </a>
+                                </div>
                             </div>
                             <div />
                         </div>
