@@ -14,6 +14,8 @@ export default function LandingPage() {
         issue: '',
         message: '',
     });
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [activeSlide, setActiveSlide] = useState(0);
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -57,195 +59,306 @@ export default function LandingPage() {
         },
     ];
 
-    // Cambiamos placeholder-white/50 (que es 50% transparente) por placeholder-white (opaco)
-    const inputClass = "w-full p-3 rounded-lg text-white placeholder-white border border-white/10 bg-black/30 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-yellow-400";
+    const inputClass = "w-full p-3 rounded-lg text-white placeholder-white border border-white/10 bg-black/30 focus:outline-none focus:border-yellow-400/70 transition-colors duration-150";
+
+    const StarRow = ({ count }: { count: number }) => (
+        <div className="flex gap-0.5">
+            {Array.from({ length: count }).map((_, s) => (
+                <svg key={s} width="13" height="13" viewBox="0 0 24 24" fill="#FACC15">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+            ))}
+        </div>
+    );
 
     return (
         <>
-            {/* Load Montserrat from Google Fonts */}
             <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
-        * { font-family: 'Montserrat', sans-serif; box-sizing: border-box; }
-        select option { background: #1a3f6f; color: white; }
-      `}</style>
+                @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+                *, *::before, *::after { font-family: 'Montserrat', sans-serif; box-sizing: border-box; }
+                select option { background: #1a3f6f; color: white; }
+
+                /* Carousel swipe on mobile */
+                .carousel-track {
+                    display: flex;
+                    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                }
+                
+            `}</style>
 
             <div
                 className="relative min-h-screen bg-cover bg-center flex flex-col"
                 style={{ backgroundImage: "url('/contact-background.png')" }}
             >
-                {/* ── Navbar ─────────────────────────────────────────── */}
-                <nav className="relative z-20 w-full py-6 px-6">
-                    <div className="max-w-[1400px] mx-auto grid grid-cols-[1fr_auto_1fr] items-center">
+                {/* ════════════════════════════════════════
+                    NAVBAR
+                ════════════════════════════════════════ */}
+                <nav className="relative z-30 w-full py-4 px-5 lg:py-6 lg:px-6">
+                    <div className="max-w-[1400px] mx-auto">
 
-                        {/* Logo a la izquierda */}
-                        <div className="flex justify-start">
-                            <img src="/advanced-icon.png" alt="Advanced Logo" className="h-10 w-auto" />
+                        {/* ── Mobile / Tablet navbar ── */}
+                        <div className="flex items-center justify-between lg:hidden">
+                            {/* Logo centrado en mobile */}
+                            <div className="flex-1 flex justify-start">
+                                <img src="/advanced-icon.png" alt="Advanced Logo" className="h-12 w-auto" />
+                            </div>
+                            {/* Hamburger */}
+                            <button
+                                onClick={() => setMenuOpen(!menuOpen)}
+                                className="text-white p-2 rounded-lg bg-white/10 border border-white/20"
+                                aria-label="Menu"
+                            >
+                                {menuOpen ? (
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round">
+                                        <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                                    </svg>
+                                ) : (
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round">
+                                        <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+                                    </svg>
+                                )}
+                            </button>
                         </div>
 
-                        {/* Nav Container centrado */}
-                        <div className="flex items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-2 py-1.5 shadow-lg">
-                            {/* Links */}
-                            <div className="flex items-center gap-8 px-6">
+                        {/* Mobile dropdown menu */}
+                        {menuOpen && (
+                            <div
+                                className="lg:hidden mt-3 p-4 space-y-2"
+                                style={{
+                                    background: 'rgba(20, 20, 20, 0.25)', // Más oscuro
+                                    backdropFilter: 'blur(20px)',        // Más desenfocado
+                                    WebkitBackdropFilter: 'blur(20px)',  // Soporte Safari
+                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                    borderRadius: '1.5rem',              // Un poco más redondeado
+                                }}
+                            >
                                 {['Website', 'About Us', 'Comercial Roofing'].map((item) => (
                                     <a
                                         key={item}
                                         href="#"
-                                        className="text-white text-sm font-medium hover:text-yellow-400 transition-colors"
+                                        className="block text-white text-sm font-medium py-2.5 px-4 rounded-lg hover:bg-white/10 transition-colors"
                                     >
                                         {item}
                                     </a>
                                 ))}
+                                <a
+                                    href="#"
+                                    className="block bg-yellow-400 text-black text-sm font-bold text-center py-2.5 px-4 rounded-full hover:bg-yellow-300 transition-colors mt-1"
+                                >
+                                    Contact
+                                </a>
                             </div>
+                        )}
 
-                            {/* Contact CTA */}
-                            <a
-                                href="#"
-                                className="bg-yellow-400 text-black text-sm font-bold px-6 py-2 rounded-full hover:bg-yellow-300 transition-colors"
-                            >
-                                Contact
-                            </a>
+                        {/* ── Desktop navbar ── */}
+                        <div className="hidden lg:grid grid-cols-[1fr_auto_1fr] items-center">
+                            <div className="flex justify-start">
+                                <img src="/advanced-icon.png" alt="Advanced Logo" className="h-10 w-auto" />
+                            </div>
+                            <div className="flex items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-2 py-1.5 shadow-lg">
+                                <div className="flex items-center gap-8 px-6">
+                                    {['Website', 'About Us', 'Comercial Roofing'].map((item) => (
+                                        <a key={item} href="#" className="text-white text-sm font-medium hover:text-yellow-400 transition-colors">
+                                            {item}
+                                        </a>
+                                    ))}
+                                </div>
+                                <a href="#" className="bg-yellow-400 text-black text-sm font-bold px-6 py-2 rounded-full hover:bg-yellow-300 transition-colors">
+                                    Contact
+                                </a>
+                            </div>
+                            <div />
                         </div>
-
-                        {/* Espacio derecho vacío para equilibrar el grid */}
-                        <div />
                     </div>
                 </nav>
 
-                {/* ── Main: 2 columns ────────────────────────────────── */}
-                <main className="relative z-10 flex-grow flex flex-col justify-between">
-                    {/* Contenedor principal con grid */}
-                    <div className="max-w-[1500px] mx-auto w-full px-6 pt-6 grid grid-cols-2 gap-8 items-start flex-grow">
+                {/* ════════════════════════════════════════
+                    MAIN
+                ════════════════════════════════════════ */}
+                <main className="relative z-10 flex-grow flex flex-col">
 
-                        {/* ── LEFT — Testimonios (Bajados con self-end) ── */}
-                        <div className="flex-1 flex flex-col justify-end h-full">
-                            <div className="mt-auto pb-12">
-                                <div className="flex items-end gap-4 overflow-x-auto pb-4">
-                                    {testimonials.map((t, i) => (
-                                        <div
-                                            key={i}
-                                            // Eliminamos space-y-2 y añadimos flex flex-col h-full para controlar la altura
-                                            className="w-52 rounded-xl p-4 flex flex-col h-[220px] flex-shrink-0"
-                                            style={{
-                                                background: 'rgba(81,81,81,0.08)',
-                                                backdropFilter: 'blur(10px)',
-                                                WebkitBackdropFilter: 'blur(15px)',
-                                                border: '1px solid rgba(255, 255, 255, 0.1)',
-                                            }}
-                                        >
-                                            {/* Stars */}
-                                            <div className="flex gap-0.5 mb-3">
-                                                {Array.from({ length: t.stars }).map((_, s) => (
-                                                    <svg key={s} width="13" height="13" viewBox="0 0 24 24" fill="#FACC15">
-                                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                                    </svg>
-                                                ))}
-                                            </div>
+                    {/* ── DESKTOP: 2-column grid ── */}
+                    <div className="hidden min-[1400px]:flex flex-grow max-w-[1500px] mx-auto w-full px-6 pt-4 gap-8 items-stretch">
 
-                                            {/* Título */}
-                                            <p className="text-white font-bold text-sm leading-snug mb-4">{t.title}</p>
-
-                                            {/* Contenido (flex-grow hace que empuje el autor al fondo) */}
-                                            <p className="text-white text-xs leading-relaxed flex-grow">{t.body}</p>
-
-                                            {/* Autor en color #F3C200 - Siempre abajo por el flex-grow de arriba */}
-                                            <p className="text-[#F3C200] text-xs font-semibold mt-4">{t.author}</p>
-                                        </div>
-                                    ))}
-                                </div>
+                        {/* LEFT — Testimonials pushed to bottom */}
+                        <div className="flex-1 flex flex-col justify-end pb-10">
+                            {/* Añadimos -mt-20 (o el valor que prefieras) para elevar el grupo de cards */}
+                            <div className="flex items-end gap-4 mb-[30px]">
+                                {testimonials.map((t, i) => (
+                                    <div
+                                        key={i}
+                                        className="w-52 rounded-xl p-4 flex flex-col h-[220px] flex-shrink-0"
+                                        style={{ background: 'rgba(81,81,81,0.08)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(15px)', border: '1px solid rgba(255,255,255,0.1)' }}
+                                    >
+                                        <StarRow count={t.stars} />
+                                        <p className="text-white font-bold text-sm leading-snug mt-3 mb-3">{t.title}</p>
+                                        <p className="text-white text-xs leading-relaxed flex-grow">{t.body}</p>
+                                        <p className="text-[#F3C200] text-xs font-semibold mt-3">{t.author}</p>
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
-                        {/* RIGHT — Headline + Form card + CTA */}
-                        <div className="flex flex-col gap-6 w-full max-w-xl ml-auto items-center md:items-center">
-
-                            {/* Headline */}
+                        {/* RIGHT — Headline + Form + CTA */}
+                        <div className="flex flex-col gap-5 w-full max-w-[676px] ml-auto pt-2 pb-10">
                             <h1
-                                className="text-white font-semibold leading-normal text-center"
+                                className="text-white font-semibold text-center leading-tight tracking-[0.08em]"
                                 style={{
-                                    fontSize: 'clamp(2rem, 4vw, 3rem)',
+                                    fontSize: 'clamp(2.3rem, 4.4vw, 3.4rem)',
                                     lineHeight: '1.1'
                                 }}
                             >
                                 Schedule your <span className="text-yellow-400">FREE</span>
-                                <br className="hidden md:block" />
+                                <br />
                                 <span className="text-yellow-400">INSPECTION</span> now!
                             </h1>
-
-                            {/* Asegúrate de que inputClass tenga estas clases o aplícalas directamente */}
-                            <div
-                                className="w-full rounded-3xl p-6 space-y-4 shadow-2xl"
-                                style={{
-                                    background: 'rgba(136,136,136,0.08)',
-                                    backdropFilter: 'blur(10px)',
-                                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                                }}
-                            >
+                            <div className="w-full rounded-3xl p-6 space-y-6 shadow-2xl" style={{ background: 'rgba(136,136,136,0.08)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
                                 <div className="grid grid-cols-2 gap-4">
-                                    <input
-                                        name="firstName"
-                                        placeholder="Full name"
-                                        onChange={handleInputChange}
-                                        className={`${inputClass} text-white placeholder-white`}
-                                        required
-                                    />
-                                    <select
-                                        name="issue"
-                                        onChange={handleInputChange}
-                                        className={`${inputClass} text-white appearance-none`}
-                                    >
-                                        <option value="" className="text-gray-500">Issue</option>
-                                        <option value="Repair" className="text-black">Repair</option>
-                                        <option value="Replacement" className="text-black">Replacement</option>
+                                    <input name="firstName" placeholder="Full name" onChange={handleInputChange} className={inputClass} required />
+                                    <select name="issue" onChange={handleInputChange} className={`${inputClass} appearance-none`}>
+                                        <option value="">Select a service</option>
+                                        <option value="Pitch Roofs">Pitch Roofs</option>
+                                        <option value="Flat Roofs">Flat Roofs</option>
+                                        <option value="Sidings">Sidings</option>
+                                        <option value="General Inquiry">General Inquiry</option>
                                     </select>
                                 </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <input
-                                        name="phone"
-                                        placeholder="Phone number"
-                                        onChange={handleInputChange}
-                                        className={`${inputClass} text-white placeholder-white`}
-                                        required
-                                    />
-                                    <input
-                                        name="email"
-                                        type="email"
-                                        placeholder="Email"
-                                        onChange={handleInputChange}
-                                        className={`${inputClass} text-white placeholder-white`}
-                                        required
-                                    />
+                                <div className="grid grid-cols-2 gap-4 ">
+                                    <input name="phone" placeholder="Phone number" onChange={handleInputChange} className={inputClass} required />
+                                    <input name="email" type="email" placeholder="Email" onChange={handleInputChange} className={inputClass} required />
                                 </div>
-
-                                <input
-                                    name="address"
-                                    placeholder="Address"
-                                    onChange={handleInputChange}
-                                    className={`${inputClass} text-white placeholder-white`}
-                                />
-                                <input
-                                    name="zipCode"
-                                    placeholder="Zip code"
-                                    onChange={handleInputChange}
-                                    className={`${inputClass} text-white placeholder-white`}
-                                />
-                                <textarea
-                                    name="message"
-                                    placeholder="Extra notes"
-                                    onChange={handleInputChange}
-                                    rows={3}
-                                    className={`${inputClass} text-white placeholder-white resize-none`}
-                                />
+                                <input name="address" placeholder="Address" onChange={handleInputChange} className={inputClass}  />
+                                <input name="zipCode" placeholder="Zip code" onChange={handleInputChange} className={inputClass} />
+                                <textarea name="message" placeholder="Extra notes" onChange={handleInputChange} rows={3} className={`${inputClass} resize-none`} />
                             </div>
-
-                            {/* CTA button */}
-                            <button
-                                onClick={handleSubmit}
-                                className="bg-yellow-400 hover:bg-yellow-300 text-black font-semibold text-lg uppercase tracking-widest px-10 py-2 rounded-full transition-all shadow-lg w-full md:w-auto"
-                            >
+                            <button onClick={handleSubmit} className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-base uppercase tracking-widest px-10 py-3 rounded-full transition-all shadow-lg w-full">
                                 FREE INSPECTION
                             </button>
                         </div>
+                    </div>
+
+                    {/* ── MOBILE + TABLET: single column ── */}
+                    <div className="min-[1400px]:hidden flex flex-col w-full max-w-lg mx-auto px-5 pt-2 pb-8 gap-5">
+
+                        {/* Headline */}
+                        <h1 className="text-white mt-4 font-semibold text-center" style={{ fontSize: 'clamp(1.8rem, 6vw, 2.6rem)', lineHeight: '1.15' }}>
+                            Schedule your <span className="text-yellow-400">FREE</span>
+                            <br />
+                            <span className="text-yellow-400">INSPECTION</span> now!
+                        </h1>
+
+                        {/* Form card */}
+                        <div
+                            className="w-full rounded-3xl p-5 space-y-3 shadow-2xl"
+                            style={{ background: 'rgba(136,136,136,0.08)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', border: '1px solid rgba(255,255,255,0.1)' }}
+                        >
+                            {/* Full name full width on mobile */}
+                            <input name="firstName" placeholder="Full name" onChange={handleInputChange} className={inputClass} required />
+
+                            {/* Issue full width */}
+                            <div className="relative">
+
+                                <select name="issue" onChange={handleInputChange} className={`${inputClass} appearance-none`}>
+                                    <option value="">Select a service</option>
+                                    <option value="Pitch Roofs">Pitch Roofs</option>
+                                    <option value="Flat Roofs">Flat Roofs</option>
+                                    <option value="Sidings">Sidings</option>
+                                    <option value="General Inquiry">General Inquiry</option>
+                                </select>
+
+                                <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
+                                    <svg width="12" height="7" viewBox="0 0 12 7" fill="none">
+                                        <path d="M1 1L6 6L11 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <input name="email" type="email" placeholder="Email" onChange={handleInputChange} className={inputClass} required />
+                            <input name="phone" placeholder="Phone number" onChange={handleInputChange} className={inputClass} required />
+                            <input name="address" placeholder="Address" onChange={handleInputChange} className={inputClass} />
+                            <input name="zipCode" placeholder="Zip code" onChange={handleInputChange} className={inputClass} />
+                            <textarea name="message" placeholder="Extra notes" onChange={handleInputChange} rows={3} className={`${inputClass} resize-none`} />
+                        </div>
+
+                        {/* CTA button */}
+                        <button
+                            onClick={handleSubmit}
+                            className="bg-yellow-400 hover:bg-yellow-300 text-black font-semibold text-md uppercase tracking-widest px-10 py-4 rounded-full transition-all shadow-lg w-full"
+                        >
+                            FREE INSPECTION
+                        </button>
+
+                        {/* ── Testimonials carousel ── */}
+                        <div className="w-full mt-2">
+                            {/* Overflow clip container */}
+                            <div className="overflow-hidden rounded-2xl">
+                                <div
+                                    className="carousel-track"
+                                    style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+                                >
+                                    {testimonials.map((t, i) => (
+                                        <div
+                                            key={i}
+                                            className="min-w-full p-5 flex flex-col gap-3"
+                                            style={{
+                                                background: 'rgba(81,81,81,0.12)',
+                                                backdropFilter: 'blur(10px)',
+                                                WebkitBackdropFilter: 'blur(10px)',
+                                                border: '1px solid rgba(255,255,255,0.1)',
+                                                borderRadius: '1rem',
+                                            }}
+                                        >
+                                            <StarRow count={t.stars} />
+                                            <p className="text-white font-bold text-sm leading-snug">{t.title}</p>
+                                            <p className="text-white/80 text-xs leading-relaxed">{t.body}</p>
+                                            <p className="text-[#F3C200] text-xs font-semibold">{t.author}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Dots + arrows */}
+                            <div className="flex items-center justify-center gap-4 mt-4">
+                                <button
+                                    onClick={() => setActiveSlide((p) => Math.max(0, p - 1))}
+                                    className="text-white/50 hover:text-white transition-colors disabled:opacity-20"
+                                    disabled={activeSlide === 0}
+                                    aria-label="Previous"
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M15 18l-6-6 6-6" />
+                                    </svg>
+                                </button>
+
+                                <div className="flex gap-2">
+                                    {testimonials.map((_, i) => (
+                                        <button
+                                            key={i}
+                                            onClick={() => setActiveSlide(i)}
+                                            className="rounded-full transition-all duration-300"
+                                            style={{
+                                                width: activeSlide === i ? '24px' : '8px',
+                                                height: '8px',
+                                                background: activeSlide === i ? '#FACC15' : 'rgba(255,255,255,0.35)',
+                                            }}
+                                            aria-label={`Slide ${i + 1}`}
+                                        />
+                                    ))}
+                                </div>
+
+                                <button
+                                    onClick={() => setActiveSlide((p) => Math.min(testimonials.length - 1, p + 1))}
+                                    className="text-white/50 hover:text-white transition-colors disabled:opacity-20"
+                                    disabled={activeSlide === testimonials.length - 1}
+                                    aria-label="Next"
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M9 18l6-6-6-6" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </main>
             </div>
