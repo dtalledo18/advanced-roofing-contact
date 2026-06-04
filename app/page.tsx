@@ -289,7 +289,7 @@ export default function LandingPage() {
                                         <input name="zipCode" placeholder="Zip code" onChange={handleInputChange} className={inputClass} />
                                         <textarea name="message" placeholder="Extra notes" onChange={handleInputChange} rows={3} className={`${inputClass} resize-none`} />
                                     </div>
-                                    <button onClick={handleSubmit} className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-base uppercase tracking-widest px-10 py-3 rounded-full transition-all shadow-lg w-full">
+                                    <button onClick={handleSubmit} className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-base uppercase tracking-widest px-10 py-3 cursor-pointer rounded-full transition-all shadow-lg w-full">
                                         FREE INSPECTION
                                     </button>
                                 </>
