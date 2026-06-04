@@ -126,7 +126,7 @@ export default function LandingPage() {
 
             <div
                 className="relative min-h-screen bg-cover bg-center flex flex-col"
-                style={{ backgroundImage: "url('/contact-background.png')" }}
+                style={{ backgroundImage: "url('/contact-background.webp')" }}
             >
                 {/* ════════════════════════════════════════
                     NAVBAR
