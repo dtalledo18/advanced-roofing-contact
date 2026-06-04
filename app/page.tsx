@@ -24,16 +24,50 @@ export default function LandingPage() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const validateForm = () => {
+        const { firstName, phone, email, issue } = formData;
+
+        // Basic sanitization: remove extra spaces and strip HTML tags
+        const sanitized = {
+            ...formData,
+            firstName: firstName.trim().replace(/<[^>]*>?/gm, ''),
+            message: formData.message.trim().replace(/<[^>]*>?/gm, ''),
+        };
+
+        // Validations
+        if (!sanitized.firstName || sanitized.firstName.length < 2) {
+            alert("Please enter a valid name.");
+            return null;
+        }
+        if (!/^\d{10,}$/.test(phone.replace(/\D/g, ''))) {
+            alert("Please enter a valid phone number (at least 10 digits).");
+            return null;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            alert("Please enter a valid email address.");
+            return null;
+        }
+        if (!issue) {
+            alert("Please select a service.");
+            return null;
+        }
+
+        return sanitized;
+    };
+
     const handleSubmit = async () => {
+        const cleanData = validateForm();
+
+        if (!cleanData) return; // Si la validación falla, detenemos el proceso
+
         try {
             const response = await fetch('/api/contact', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(cleanData), // Enviamos los datos sanitizados
             });
-            if (!response.ok) throw new Error('Error en el envío');
 
-            // En lugar de router.push, marcamos como enviado
+            if (!response.ok) throw new Error('Error en el envío');
             setIsSubmitted(true);
         } catch (error) {
             console.error(error);
