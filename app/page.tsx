@@ -16,6 +16,7 @@ export default function LandingPage() {
     });
     const [menuOpen, setMenuOpen] = useState(false);
     const [activeSlide, setActiveSlide] = useState(0);
+    const [isSubmitted, setIsSubmitted] = useState(false); // <--- Añade esta línea
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -31,7 +32,9 @@ export default function LandingPage() {
                 body: JSON.stringify(formData),
             });
             if (!response.ok) throw new Error('Error en el envío');
-            router.push('/contact-us/thank-you');
+
+            // En lugar de router.push, marcamos como enviado
+            setIsSubmitted(true);
         } catch (error) {
             console.error(error);
             alert('Hubo un error al enviar el formulario.');
@@ -215,92 +218,113 @@ export default function LandingPage() {
 
                         {/* RIGHT — Headline + Form + CTA */}
                         <div className="flex flex-col gap-5 w-full max-w-[676px] ml-auto pt-2 pb-10">
-                            <h1
-                                className="text-white font-semibold text-center leading-tight tracking-[0.08em]"
-                                style={{
-                                    fontSize: 'clamp(2.3rem, 4.4vw, 3.4rem)',
-                                    lineHeight: '1.1'
-                                }}
-                            >
-                                Schedule your <span className="text-yellow-400">FREE</span>
-                                <br />
-                                <span className="text-yellow-400">INSPECTION</span> now!
-                            </h1>
-                            <div className="w-full rounded-3xl p-6 space-y-6 shadow-2xl" style={{ background: 'rgba(136,136,136,0.08)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <input name="firstName" placeholder="Full name" onChange={handleInputChange} className={inputClass} required />
-                                    <select name="issue" onChange={handleInputChange} className={`${inputClass} appearance-none`}>
-                                        <option value="">Select a service</option>
-                                        <option value="Pitch Roofs">Pitch Roofs</option>
-                                        <option value="Flat Roofs">Flat Roofs</option>
-                                        <option value="Sidings">Sidings</option>
-                                        <option value="General Inquiry">General Inquiry</option>
-                                    </select>
+                            {isSubmitted ? (
+                                <div className="bg-white/10 backdrop-blur-md p-10 rounded-3xl text-center border border-white/20">
+                                    <h2 className="text-yellow-400 text-3xl font-bold mb-4">Thank You!</h2>
+                                    <p className="text-white">We have received your request and will contact you shortly.</p>
                                 </div>
-                                <div className="grid grid-cols-2 gap-4 ">
-                                    <input name="phone" placeholder="Phone number" onChange={handleInputChange} className={inputClass} required />
-                                    <input name="email" type="email" placeholder="Email" onChange={handleInputChange} className={inputClass} required />
-                                </div>
-                                <input name="address" placeholder="Address" onChange={handleInputChange} className={inputClass}  />
-                                <input name="zipCode" placeholder="Zip code" onChange={handleInputChange} className={inputClass} />
-                                <textarea name="message" placeholder="Extra notes" onChange={handleInputChange} rows={3} className={`${inputClass} resize-none`} />
-                            </div>
-                            <button onClick={handleSubmit} className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-base uppercase tracking-widest px-10 py-3 rounded-full transition-all shadow-lg w-full">
-                                FREE INSPECTION
-                            </button>
+                            ) : (
+                                <>
+                                    <h1
+                                        className="text-white font-semibold text-center leading-tight tracking-[0.08em]"
+                                        style={{
+                                            fontSize: 'clamp(2.3rem, 4.4vw, 3.4rem)',
+                                            lineHeight: '1.1'
+                                        }}
+                                    >
+                                        Schedule your <span className="text-yellow-400">FREE</span>
+                                        <br />
+                                        <span className="text-yellow-400">INSPECTION</span> now!
+                                    </h1>
+                                    <div className="w-full rounded-3xl p-6 space-y-6 shadow-2xl" style={{ background: 'rgba(136,136,136,0.08)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <input name="firstName" placeholder="Full name" onChange={handleInputChange} className={inputClass} required />
+                                            <select name="issue" onChange={handleInputChange} className={`${inputClass} appearance-none`}>
+                                                <option value="">Select a service</option>
+                                                <option value="Pitch Roofs">Pitch Roofs</option>
+                                                <option value="Flat Roofs">Flat Roofs</option>
+                                                <option value="Sidings">Sidings</option>
+                                                <option value="General Inquiry">General Inquiry</option>
+                                            </select>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4 ">
+                                            <input name="phone" placeholder="Phone number" onChange={handleInputChange} className={inputClass} required />
+                                            <input name="email" type="email" placeholder="Email" onChange={handleInputChange} className={inputClass} required />
+                                        </div>
+                                        <input name="address" placeholder="Address" onChange={handleInputChange} className={inputClass}  />
+                                        <input name="zipCode" placeholder="Zip code" onChange={handleInputChange} className={inputClass} />
+                                        <textarea name="message" placeholder="Extra notes" onChange={handleInputChange} rows={3} className={`${inputClass} resize-none`} />
+                                    </div>
+                                    <button onClick={handleSubmit} className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-base uppercase tracking-widest px-10 py-3 rounded-full transition-all shadow-lg w-full">
+                                        FREE INSPECTION
+                                    </button>
+                                </>
+                            )}
+
                         </div>
                     </div>
 
                     {/* ── MOBILE + TABLET: single column ── */}
                     <div className="min-[1400px]:hidden flex flex-col w-full max-w-lg mx-auto px-5 pt-2 pb-8 gap-5">
 
-                        {/* Headline */}
-                        <h1 className="text-white mt-4 font-semibold text-center" style={{ fontSize: 'clamp(1.8rem, 6vw, 2.6rem)', lineHeight: '1.15' }}>
-                            Schedule your <span className="text-yellow-400">FREE</span>
-                            <br />
-                            <span className="text-yellow-400">INSPECTION</span> now!
-                        </h1>
-
-                        {/* Form card */}
-                        <div
-                            className="w-full rounded-3xl p-5 space-y-3 shadow-2xl"
-                            style={{ background: 'rgba(136,136,136,0.08)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', border: '1px solid rgba(255,255,255,0.1)' }}
-                        >
-                            {/* Full name full width on mobile */}
-                            <input name="firstName" placeholder="Full name" onChange={handleInputChange} className={inputClass} required />
-
-                            {/* Issue full width */}
-                            <div className="relative">
-
-                                <select name="issue" onChange={handleInputChange} className={`${inputClass} appearance-none`}>
-                                    <option value="">Select a service</option>
-                                    <option value="Pitch Roofs">Pitch Roofs</option>
-                                    <option value="Flat Roofs">Flat Roofs</option>
-                                    <option value="Sidings">Sidings</option>
-                                    <option value="General Inquiry">General Inquiry</option>
-                                </select>
-
-                                <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
-                                    <svg width="12" height="7" viewBox="0 0 12 7" fill="none">
-                                        <path d="M1 1L6 6L11 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </div>
+                        {isSubmitted ? (
+                            <div className="bg-white/10 backdrop-blur-md p-10 rounded-3xl text-center border border-white/20">
+                                <h2 className="text-yellow-400 text-3xl font-bold mb-4">Thank You!</h2>
+                                <p className="text-white">We have received your request and will contact you shortly.</p>
                             </div>
+                        ) : (
+                            <>
+                                {/* Headline */}
+                                <h1 className="text-white mt-4 font-semibold text-center" style={{ fontSize: 'clamp(1.8rem, 6vw, 2.6rem)', lineHeight: '1.15' }}>
+                                    Schedule your <span className="text-yellow-400">FREE</span>
+                                    <br />
+                                    <span className="text-yellow-400">INSPECTION</span> now!
+                                </h1>
 
-                            <input name="email" type="email" placeholder="Email" onChange={handleInputChange} className={inputClass} required />
-                            <input name="phone" placeholder="Phone number" onChange={handleInputChange} className={inputClass} required />
-                            <input name="address" placeholder="Address" onChange={handleInputChange} className={inputClass} />
-                            <input name="zipCode" placeholder="Zip code" onChange={handleInputChange} className={inputClass} />
-                            <textarea name="message" placeholder="Extra notes" onChange={handleInputChange} rows={3} className={`${inputClass} resize-none`} />
-                        </div>
+                                {/* Form card */}
+                                <div
+                                    className="w-full rounded-3xl p-5 space-y-3 shadow-2xl"
+                                    style={{ background: 'rgba(136,136,136,0.08)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', border: '1px solid rgba(255,255,255,0.1)' }}
+                                >
+                                    {/* Full name full width on mobile */}
+                                    <input name="firstName" placeholder="Full name" onChange={handleInputChange} className={inputClass} required />
 
-                        {/* CTA button */}
-                        <button
-                            onClick={handleSubmit}
-                            className="bg-yellow-400 hover:bg-yellow-300 text-black font-semibold text-md uppercase tracking-widest px-10 py-4 rounded-full transition-all shadow-lg w-full"
-                        >
-                            FREE INSPECTION
-                        </button>
+                                    {/* Issue full width */}
+                                    <div className="relative">
+
+                                        <select name="issue" onChange={handleInputChange} className={`${inputClass} appearance-none`}>
+                                            <option value="">Select a service</option>
+                                            <option value="Pitch Roofs">Pitch Roofs</option>
+                                            <option value="Flat Roofs">Flat Roofs</option>
+                                            <option value="Sidings">Sidings</option>
+                                            <option value="General Inquiry">General Inquiry</option>
+                                        </select>
+
+                                        <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
+                                            <svg width="12" height="7" viewBox="0 0 12 7" fill="none">
+                                                <path d="M1 1L6 6L11 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <input name="email" type="email" placeholder="Email" onChange={handleInputChange} className={inputClass} required />
+                                    <input name="phone" placeholder="Phone number" onChange={handleInputChange} className={inputClass} required />
+                                    <input name="address" placeholder="Address" onChange={handleInputChange} className={inputClass} />
+                                    <input name="zipCode" placeholder="Zip code" onChange={handleInputChange} className={inputClass} />
+                                    <textarea name="message" placeholder="Extra notes" onChange={handleInputChange} rows={3} className={`${inputClass} resize-none`} />
+                                </div>
+
+                                {/* CTA button */}
+                                <button
+                                    onClick={handleSubmit}
+                                    className="bg-yellow-400 hover:bg-yellow-300 text-black font-semibold text-md uppercase tracking-widest px-10 py-4 rounded-full transition-all shadow-lg w-full"
+                                >
+                                    FREE INSPECTION
+                                </button>
+                            </>
+                        )}
+
+
 
                         {/* ── Testimonials carousel ── */}
                         <div className="w-full mt-2">
