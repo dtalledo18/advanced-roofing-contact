@@ -212,7 +212,7 @@ export default function LandingPage() {
                         {/* ── Mobile / Tablet navbar ── */}
                         <div className="flex items-center justify-between lg:hidden">
                             <div className="flex-1 flex justify-start">
-                                <img src="/advanced-icon.png" alt="Advanced Logo" className="h-12 w-auto" />
+                                <img src="/advanced-icon.png" alt="Advanced Logo" className="h-9 w-auto" />
                             </div>
                             <button
                                 onClick={() => setMenuOpen(!menuOpen)}
