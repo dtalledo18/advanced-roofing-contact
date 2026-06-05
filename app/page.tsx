@@ -16,7 +16,8 @@ export default function LandingPage() {
     });
     const [menuOpen, setMenuOpen] = useState(false);
     const [activeSlide, setActiveSlide] = useState(0);
-    const [isSubmitted, setIsSubmitted] = useState(false); // <--- Añade esta línea
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -57,21 +58,23 @@ export default function LandingPage() {
 
     const handleSubmit = async () => {
         const cleanData = validateForm();
+        if (!cleanData) return;
 
-        if (!cleanData) return; // Si la validación falla, detenemos el proceso
-
+        setIsLoading(true); // Activamos carga
         try {
             const response = await fetch('/api/contact', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(cleanData), // Enviamos los datos sanitizados
+                body: JSON.stringify(cleanData),
             });
 
             if (!response.ok) throw new Error('Error en el envío');
             setIsSubmitted(true);
         } catch (error) {
             console.error(error);
-            alert('Hubo un error al enviar el formulario.');
+            alert('There was an error sending the form. Please try again later.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -289,8 +292,19 @@ export default function LandingPage() {
                                         <input name="zipCode" placeholder="Zip code" onChange={handleInputChange} className={inputClass} />
                                         <textarea name="message" placeholder="Extra notes" onChange={handleInputChange} rows={3} className={`${inputClass} resize-none`} />
                                     </div>
-                                    <button onClick={handleSubmit} className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-base uppercase tracking-widest px-10 py-3 cursor-pointer rounded-full transition-all shadow-lg w-full">
-                                        FREE INSPECTION
+                                    <button
+                                        onClick={handleSubmit}
+                                        disabled={isLoading}
+                                        className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold text-base uppercase tracking-widest px-10 py-3 rounded-full transition-all shadow-lg w-full flex items-center justify-center gap-2 disabled:opacity-70"
+                                    >
+                                        {isLoading ? (
+                                            <>
+                                                <svg className="animate-spin h-5 w-5 text-black" viewBox="0 0 24 24" fill="none">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                                </svg>
+                                            </>
+                                        ) : "FREE INSPECTION"}
                                     </button>
                                 </>
                             )}
@@ -351,9 +365,17 @@ export default function LandingPage() {
                                 {/* CTA button */}
                                 <button
                                     onClick={handleSubmit}
-                                    className="bg-yellow-400 hover:bg-yellow-300 text-black font-semibold text-md uppercase tracking-widest px-10 py-4 rounded-full transition-all shadow-lg w-full"
+                                    disabled={isLoading}
+                                    className="bg-yellow-400 hover:bg-yellow-300 text-black font-semibold text-md uppercase tracking-widest px-10 py-4 rounded-full transition-all shadow-lg w-full flex items-center justify-center gap-2 disabled:opacity-70"
                                 >
-                                    FREE INSPECTION
+                                    {isLoading ? (
+                                        <>
+                                            <svg className="animate-spin h-5 w-5 text-black" viewBox="0 0 24 24" fill="none">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                            </svg>
+                                        </>
+                                    ) : "FREE INSPECTION"}
                                 </button>
                             </>
                         )}
