@@ -214,71 +214,17 @@ export default function LandingPage() {
                             <div className="flex-1 flex justify-start">
                                 <img src="/advanced-icon.png" alt="Advanced Logo" className="h-9 w-auto" />
                             </div>
-                            <button
-                                onClick={() => setMenuOpen(!menuOpen)}
-                                className="text-white p-2 rounded-lg bg-white/10 border border-white/20"
-                                aria-label="Menu"
-                            >
-                                {menuOpen ? (
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round">
-                                        <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-                                    </svg>
-                                ) : (
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round">
-                                        <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
-                                    </svg>
-                                )}
-                            </button>
+                            
                         </div>
 
-                        {menuOpen && (
-                            <div
-                                className="lg:hidden mt-3 p-4 space-y-2"
-                                style={{
-                                    background: 'rgba(20, 20, 20, 0.25)',
-                                    backdropFilter: 'blur(20px)',
-                                    WebkitBackdropFilter: 'blur(20px)',
-                                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                                    borderRadius: '1.5rem',
-                                }}
-                            >
-                                {[
-                                    { label: 'Website', href: 'https://www.advancedroofingteam.com/' },
-                                    { label: 'About Us', href: 'https://www.advancedroofingteam.com/about-us/' },
-                                    { label: 'Comercial Roofing', href: 'https://www.advancedroofingteam.com/commercial-roofing/' }
-                                ].map((item) => (
-                                    <a key={item.label} href={item.href} className="block text-white text-sm font-medium py-2.5 px-4 rounded-lg hover:bg-white/10 transition-colors">
-                                        {item.label}
-                                    </a>
-                                ))}
-                                <div className="block bg-yellow-400 text-black text-sm font-bold text-center py-2.5 px-4 rounded-full cursor-default mt-1">
-                                    Contact
-                                </div>
-                            </div>
-                        )}
+
 
                         {/* ── Desktop navbar ── */}
                         <div className="hidden lg:grid grid-cols-[1fr_auto_1fr] items-center">
                             <div className="flex justify-start">
                                 <img src="/advanced-icon.png" alt="Advanced Logo" className="h-10 w-auto" />
                             </div>
-                            <div className="flex items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-2 py-1.5 shadow-lg">
-                                <div className="flex items-center gap-8 px-6">
-                                    {[
-                                        { label: 'Website', href: 'https://www.advancedroofingteam.com/' },
-                                        { label: 'About Us', href: 'https://www.advancedroofingteam.com/about-us/' },
-                                        { label: 'Comercial Roofing', href: 'https://www.advancedroofingteam.com/commercial-roofing/' }
-                                    ].map((item) => (
-                                        <a key={item.label} href={item.href} className="text-white text-sm font-medium hover:text-yellow-400 transition-colors">
-                                            {item.label}
-                                        </a>
-                                    ))}
-                                </div>
-                                <div className="bg-yellow-400 text-black text-sm font-bold px-6 py-2 rounded-full cursor-default">
-                                    Contact
-                                </div>
-                            </div>
-                            <div />
+
                         </div>
                     </div>
                 </nav>
