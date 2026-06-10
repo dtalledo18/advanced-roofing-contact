@@ -128,6 +128,8 @@ export default function LandingPage() {
             });
 
             if (!response.ok) throw new Error('Error en el envío');
+            // --- AQUÍ DISPARAMOS EL EVENTO DE LEAD ---
+            import('react-facebook-pixel').then((x) => x.default.track('Lead'));
             setIsSubmitted(true);
         } catch (error) {
             console.error(error);
@@ -164,9 +166,9 @@ export default function LandingPage() {
             errors[field] ? 'border-red-500' : 'border-white/10'
         } bg-black/30 focus:outline-none focus:border-yellow-400/70 transition-colors duration-150`;
 
-    // Mensaje de error reutilizable
-    const ErrorMsg = ({ field }: { field: keyof typeof errors }) =>
-        errors[field] ? (
+    const renderError = (field: keyof typeof errors) => {
+        if (!errors[field]) return null;
+        return (
             <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                     <circle cx="12" cy="12" r="10" />
@@ -175,7 +177,8 @@ export default function LandingPage() {
                 </svg>
                 {errors[field]}
             </p>
-        ) : null;
+        );
+    };
 
     const StarRow = ({ count }: { count: number }) => (
         <div className="flex gap-0.5">
@@ -279,7 +282,7 @@ export default function LandingPage() {
                                         <div className="grid grid-cols-1 gap-4">
                                             <div>
                                                 <input name="firstName" placeholder="Full name" onChange={handleInputChange} className={inputClass('firstName')} />
-                                                <ErrorMsg field="firstName" />
+                                                {renderError('firstName')}
                                             </div>
                                         </div>
 
@@ -287,11 +290,11 @@ export default function LandingPage() {
                                         <div className="grid grid-cols-2 gap-4">
                                             <div>
                                                 <input name="email" type="email" placeholder="Email" onChange={handleInputChange} className={inputClass('email')} />
-                                                <ErrorMsg field="email" />
+                                                {renderError('email')}
                                             </div>
                                             <div>
                                                 <input name="phone" placeholder="Phone number" onChange={handleInputChange} className={inputClass('phone')} />
-                                                <ErrorMsg field="phone" />
+                                                {renderError('phone')}
                                             </div>
                                         </div>
 
@@ -303,20 +306,20 @@ export default function LandingPage() {
                                                 <option value="Sidings">Sidings</option>
                                                 <option value="General Inquiry">General Inquiry</option>
                                             </select>
-                                            <ErrorMsg field="issue" />
+                                            {renderError('issue')}
                                         </div>
 
                                         {/* Address */}
                                         <div>
                                             <input name="address" placeholder="Address" onChange={handleInputChange} className={inputClass('address')} />
-                                            <ErrorMsg field="address" />
+                                            {renderError('address')}
                                         </div>
 
                                         {/* Message */}
                                         <div>
                                             <textarea name="message" placeholder="Extra notes" onChange={handleInputChange} rows={3} className={`${inputClass('message')} resize-none`} />
                                             <div className="flex justify-between items-start">
-                                                <ErrorMsg field="message" />
+                                                {renderError('message')}
                                                 <span className="text-white/30 text-xs ml-auto mt-1">
                                                     {formData.message.length}/500
                                                 </span>
@@ -364,19 +367,19 @@ export default function LandingPage() {
                                     {/* Full name */}
                                     <div>
                                         <input name="firstName" placeholder="Full name" onChange={handleInputChange} className={inputClass('firstName')} />
-                                        <ErrorMsg field="firstName" />
+                                        {renderError('firstName')}
                                     </div>
 
                                     {/* Email */}
                                     <div>
                                         <input name="email" type="email" placeholder="Email" onChange={handleInputChange} className={inputClass('email')} />
-                                        <ErrorMsg field="email" />
+                                        {renderError('email')}
                                     </div>
 
                                     {/* Phone */}
                                     <div>
                                         <input name="phone" placeholder="Phone number" onChange={handleInputChange} className={inputClass('phone')} />
-                                        <ErrorMsg field="phone" />
+                                        {renderError('phone')}
                                     </div>
 
                                     {/* Service */}
@@ -395,20 +398,20 @@ export default function LandingPage() {
                                                 </svg>
                                             </div>
                                         </div>
-                                        <ErrorMsg field="issue" />
+                                        {renderError('issue')}
                                     </div>
 
                                     {/* Address */}
                                     <div>
                                         <input name="address" placeholder="Address" onChange={handleInputChange} className={inputClass('address')} />
-                                        <ErrorMsg field="address" />
+                                        {renderError('address')}
                                     </div>
 
                                     {/* Message */}
                                     <div>
                                         <textarea name="message" placeholder="Extra notes" onChange={handleInputChange} rows={3} className={`${inputClass('message')} resize-none`} />
                                         <div className="flex justify-between items-start">
-                                            <ErrorMsg field="message" />
+                                            {renderError('message')}
                                             <span className="text-white/30 text-xs ml-auto mt-1">
                                                 {formData.message.length}/500
                                             </span>
