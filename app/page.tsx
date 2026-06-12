@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { Phone } from 'lucide-react';
 
 export default function LandingPage() {
     const router = useRouter();
@@ -218,17 +220,7 @@ export default function LandingPage() {
                                 <img src="/advanced-icon.png" alt="Advanced Logo" className="h-9 w-auto" />
                             </div>
                             {/* Teléfono móvil */}
-                            <div
-                                className="px-4 py-1.5 rounded-full shadow-2xl"
-                                style={{
-                                    background: 'rgba(81,81,81,0.08)',
-                                    backdropFilter: 'blur(10px)',
-                                    WebkitBackdropFilter: 'blur(15px)',
-                                    border: '1px solid rgba(255,255,255,0.1)'
-                                }}
-                            >
-                                <p className="text-white text-sm font-medium">224-426-4773</p>
-                            </div>
+
                         </div>
 
                         {/* ── Desktop navbar ── */}
@@ -238,19 +230,7 @@ export default function LandingPage() {
                             </div>
                             <div />
                             {/* Teléfono escritorio */}
-                            <div className="flex justify-end">
-                                <div
-                                    className="px-6 py-2 rounded-full shadow-2xl"
-                                    style={{
-                                        background: 'rgba(81,81,81,0.08)',
-                                        backdropFilter: 'blur(10px)',
-                                        WebkitBackdropFilter: 'blur(15px)',
-                                        border: '1px solid rgba(255,255,255,0.1)'
-                                    }}
-                                >
-                                    <p className="text-white text-xl font-medium">224-426-4773</p>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </nav>
@@ -362,6 +342,38 @@ export default function LandingPage() {
                                             </svg>
                                         ) : "FREE INSPECTION"}
                                     </button>
+
+                                    <div className="flex flex-col items-center gap-3 mt-2">
+                                        <motion.a
+                                            href="tel:2244264773"
+                                            className="flex items-center gap-3 px-6 py-3 rounded-full shadow-2xl transition-all"
+                                            style={{
+                                                background: 'rgba(255, 255, 255, 0.05)',
+                                                backdropFilter: 'blur(10px)',
+                                                WebkitBackdropFilter: 'blur(15px)',
+                                                border: '1px solid rgba(255, 255, 255, 0.1)'
+                                            }}
+                                            // Configuración de la animación de "temblor" al hacer hover
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            <span className="text-white/90 font-medium text-lg">Or call us</span>
+
+                                            <motion.div
+                                                animate={{ rotate: [0, -15, 15, -15, 0] }}
+                                                transition={{
+                                                    duration: 0.5,
+                                                    repeat: Infinity,
+                                                    repeatDelay: 3,
+                                                    ease: "easeInOut"
+                                                }}
+                                            >
+                                                <Phone size={18} className="text-yellow-400 fill-yellow-400" />
+                                            </motion.div>
+
+                                            <span className="text-white font-bold tracking-wide text-lg">224-426-4773</span>
+                                        </motion.a>
+                                    </div>
                                 </>
                             )}
                         </div>
@@ -454,6 +466,37 @@ export default function LandingPage() {
                                         </svg>
                                     ) : "FREE INSPECTION"}
                                 </button>
+                                <div className="flex flex-col items-center gap-3 mt-2">
+                                    <motion.a
+                                        href="tel:2244264773"
+                                        className="flex items-center gap-3 px-6 py-3 rounded-full shadow-2xl transition-all"
+                                        style={{
+                                            background: 'rgba(255, 255, 255, 0.05)',
+                                            backdropFilter: 'blur(10px)',
+                                            WebkitBackdropFilter: 'blur(15px)',
+                                            border: '1px solid rgba(255, 255, 255, 0.1)'
+                                        }}
+                                        // Configuración de la animación de "temblor" al hacer hover
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        <span className="text-white/90 font-medium text-md">Or call us</span>
+
+                                        <motion.div
+                                            animate={{ rotate: [0, -15, 15, -15, 0] }}
+                                            transition={{
+                                                duration: 0.5,
+                                                repeat: Infinity,
+                                                repeatDelay: 3,
+                                                ease: "easeInOut"
+                                            }}
+                                        >
+                                            <Phone size={18} className="text-yellow-400 fill-yellow-400" />
+                                        </motion.div>
+
+                                        <span className="text-white font-bold tracking-wide text-md">224-426-4773</span>
+                                    </motion.a>
+                                </div>
                             </>
                         )}
 
