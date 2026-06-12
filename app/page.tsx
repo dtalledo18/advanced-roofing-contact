@@ -248,7 +248,7 @@ export default function LandingPage() {
                                         border: '1px solid rgba(255,255,255,0.1)'
                                     }}
                                 >
-                                    <p className="text-white text-md font-medium">224-426-4773</p>
+                                    <p className="text-white text-xl font-medium">224-426-4773</p>
                                 </div>
                             </div>
                         </div>
