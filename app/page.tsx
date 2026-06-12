@@ -207,8 +207,8 @@ export default function LandingPage() {
                 style={{ backgroundImage: "url('/contact-background.webp')" }}
             >
                 {/* ════════════════════════════════════════
-                    NAVBAR
-                ════════════════════════════════════════ */}
+    NAVBAR
+════════════════════════════════════════ */}
                 <nav className="relative z-30 w-full py-4 px-5 lg:py-6 lg:px-6">
                     <div className="max-w-[1400px] mx-auto">
 
@@ -217,17 +217,40 @@ export default function LandingPage() {
                             <div className="flex-1 flex justify-start">
                                 <img src="/advanced-icon.png" alt="Advanced Logo" className="h-9 w-auto" />
                             </div>
-                            
+                            {/* Teléfono móvil */}
+                            <div
+                                className="px-4 py-1.5 rounded-full shadow-2xl"
+                                style={{
+                                    background: 'rgba(81,81,81,0.08)',
+                                    backdropFilter: 'blur(10px)',
+                                    WebkitBackdropFilter: 'blur(15px)',
+                                    border: '1px solid rgba(255,255,255,0.1)'
+                                }}
+                            >
+                                <p className="text-white text-sm font-medium">224-426-4773</p>
+                            </div>
                         </div>
-
-
 
                         {/* ── Desktop navbar ── */}
                         <div className="hidden lg:grid grid-cols-[1fr_auto_1fr] items-center">
                             <div className="flex justify-start">
                                 <img src="/advanced-icon.png" alt="Advanced Logo" className="h-10 w-auto" />
                             </div>
-
+                            <div />
+                            {/* Teléfono escritorio */}
+                            <div className="flex justify-end">
+                                <div
+                                    className="px-6 py-2 rounded-full shadow-2xl"
+                                    style={{
+                                        background: 'rgba(81,81,81,0.08)',
+                                        backdropFilter: 'blur(10px)',
+                                        WebkitBackdropFilter: 'blur(15px)',
+                                        border: '1px solid rgba(255,255,255,0.1)'
+                                    }}
+                                >
+                                    <p className="text-white text-md font-medium">224-426-4773</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </nav>
